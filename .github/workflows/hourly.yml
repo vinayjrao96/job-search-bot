@@ -40,6 +40,7 @@ jobs:
           RAPIDAPI_KEY:      ${{ secrets.RAPIDAPI_KEY }}
           GMAIL_ADDRESS:     ${{ secrets.GMAIL_ADDRESS }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          FLUSH_DB:          ${{ vars.FLUSH_DB }}
         run: python main.py
 
       # Commit jobs.db back so deduplication persists across hourly runs.
