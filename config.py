@@ -142,20 +142,19 @@ INDIA_REMOTE_PHRASES: list[str] = [
 ]
 
 # Gemini models — cascading fallback list. The bot tries each in order until one works.
-# When a model returns 429 (quota exhausted), the next model in the list is tried.
-# Free-tier daily limits (as of July 2026):
-#   gemini-2.0-flash       — 1,500 req/day (best quota)
-#   gemini-2.0-flash-lite  — 1,500 req/day
-#   gemini-2.5-flash       — 25 req/day
-#   gemini-2.5-flash-lite  — 20 req/day
-#   gemini-2.5-pro         — 5 req/day (slowest, highest quality)
-# Total across all models: ~3,050 calls/day on free tier.
+# When a model returns 429 (quota exhausted), the next model is tried.
+# Limits vary by project and change over time — check yours at:
+# https://aistudio.google.com/app/plan_information
+# All models below support generateContent for text scoring.
 GEMINI_MODELS: list[str] = [
-    "gemini-2.0-flash",          # 1,500/day — primary
-    "gemini-2.0-flash-lite",     # 1,500/day — fast, lightweight
-    "gemini-2.5-flash",          #    25/day — newer, smarter
-    "gemini-2.5-flash-lite",     #    20/day — budget 2.5
-    "gemini-2.5-pro",            #     5/day — last resort, highest quality
+    "gemini-2.0-flash",              # Highest free-tier daily quota (~1,500/day)
+    "gemini-2.0-flash-lite",         # Same tier, lightweight (~1,500/day)
+    "gemini-2.5-flash-lite",         # Good free quota (~1,000/day)
+    "gemini-2.5-flash",              # Smart, moderate quota (~250/day)
+    "gemini-2.5-pro",                # Best quality, low quota (~100/day)
+    "gemini-3.5-flash",              # Latest generation
+    "gemini-3.1-flash-lite",         # Latest lightweight
+    "gemini-3-flash-preview",        # Preview — may have limited quota
 ]
 
 # File paths
