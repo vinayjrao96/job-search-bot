@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Write secrets to disk
+      - name: Write local files from secrets
         env:
           RESUME_TXT: ${{ secrets.RESUME_TXT }}
           PROFILE_JSON: ${{ secrets.PROFILE_JSON }}
