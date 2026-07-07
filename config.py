@@ -141,8 +141,10 @@ INDIA_REMOTE_PHRASES: list[str] = [
     "all timezones", "any timezone", "flexible timezone", "overlap",
 ]
 
-# Gemini model. gemini-2.5-flash-lite is free (~20 req/day).
-MODEL: str = "gemini-2.5-flash"
+# Gemini model. gemini-2.0-flash has 1,500 req/day on free tier (vs 25 for 2.5-flash).
+# Falls back to gemini-2.5-flash-lite if primary model quota is exhausted.
+MODEL: str = "gemini-2.0-flash"
+MODEL_FALLBACK: str = "gemini-2.5-flash-lite"
 
 # File paths
 DB_PATH: str = "jobs.db"
