@@ -23,6 +23,16 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Write secrets to disk
+        env:
+          RESUME_TXT: ${{ secrets.RESUME_TXT }}
+          PROFILE_JSON: ${{ secrets.PROFILE_JSON }}
+        run: |
+          echo "$RESUME_TXT" > resume.txt
+          if [ -n "$PROFILE_JSON" ]; then
+            echo "$PROFILE_JSON" > profile.json
+          fi
+
       - name: Run job search bot
         env:
           GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
