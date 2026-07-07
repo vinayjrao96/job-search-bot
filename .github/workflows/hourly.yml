@@ -11,6 +11,7 @@ permissions:
 jobs:
   run-bot:
     runs-on: ubuntu-latest
+    environment: job-search
 
     steps:
       - uses: actions/checkout@v4
