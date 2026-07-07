@@ -60,13 +60,26 @@ def _gemini(prompt: str) -> str:
     - On 429 (quota exhausted): move to next model in the list.
     - If all models are exhausted: raise QuotaExhaustedError.
     """
+    import warnings
+    warnings.filterwarnings("ignore", message=".*non-text parts.*")
+
     client = genai.Client(api_key=GEMINI_API_KEY)
 
     for model in GEMINI_MODELS:
         for attempt in range(3):
             try:
                 response = client.models.generate_content(model=model, contents=prompt)
-                return response.text.strip()
+                # Extract only text parts (skip thinking/signature parts)
+                text_parts = []
+                if response.candidates:
+                    for part in response.candidates[0].content.parts:
+                        if hasattr(part, "text") and part.text:
+                            text_parts.append(part.text)
+                result = "".join(text_parts).strip()
+                if not result:
+                    # Fallback to .text accessor if parts extraction failed
+                    result = (response.text or "").strip()
+                return result
             except Exception as e:
                 err = str(e)
                 if "429" in err or "RESOURCE_EXHAUSTED" in err:
