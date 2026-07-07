@@ -1,0 +1,6 @@
+.venv/
+jobs.db
+.env
+profile.json
+__pycache__/
+*.pyc

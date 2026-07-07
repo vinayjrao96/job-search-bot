@@ -1,0 +1,49 @@
+name: Hourly Job Search
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # every hour, on the hour (UTC)
+  workflow_dispatch: {}    # trigger manually from the Actions tab
+
+permissions:
+  contents: write   # required to commit jobs.db back to the repo
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Write profile.json from the GitHub secret (if provided).
+      # This personalises search terms, keywords, and location from your resume.
+      # To generate the secret value: run `python bootstrap.py` locally, then
+      # add the contents of profile.json as a secret named PROFILE_JSON.
+      - name: Write profile.json
+        if: ${{ secrets.PROFILE_JSON != '' }}
+        run: echo '${{ secrets.PROFILE_JSON }}' > profile.json
+
+      - name: Run job search bot
+        env:
+          GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
+          APIFY_API_KEY:     ${{ secrets.APIFY_API_KEY }}
+          RAPIDAPI_KEY:      ${{ secrets.RAPIDAPI_KEY }}
+          GMAIL_ADDRESS:     ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: python main.py
+
+      # Commit jobs.db back so deduplication persists across hourly runs.
+      - name: Persist seen-jobs database
+        run: |
+          git config user.name  "job-search-bot"
+          git config user.email "actions@github.com"
+          git add jobs.db
+          git diff --staged --quiet || git commit -m "chore: update seen jobs [skip ci]"
+          git push

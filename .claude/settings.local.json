@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\\\.\\(py|txt|yml|md\\)$\")",
+      "WebSearch",
+      "WebFetch(domain:apify.com)",
+      "WebFetch(domain:docs.apify.com)",
+      "Bash(grep -E \"\\\\.\\(txt|txt$\\)\")"
+    ]
+  }
+}
