@@ -100,11 +100,12 @@ GEMINI_API_KEY   = os.environ.get("GEMINI_API_KEY")
 # ---------------------------------------------------------------------------
 
 # JSearch cadence (currently disabled — API deprecated by provider).
-JSEARCH_INTERVAL_HOURS: int = 6
+JSEARCH_INTERVAL_HOURS: int = 1
 
-# Apify cadence. At $0.003/job, default ~$65/month.
-# Raise to 12 or 24 to reduce spend.
-APIFY_INTERVAL_HOURS: int = 6
+# Apify cadence. Set to 1 to run every hour.
+# Cost at default settings: ~$0.54 per run × 24 runs/day ≈ $13/day or ~$390/month.
+# Raise to 6 or 12 to reduce spend.
+APIFY_INTERVAL_HOURS: int = 1
 
 # Job boards to scrape. naukri covers India; linkedin/indeed/glassdoor are global.
 # Supported: linkedin, indeed, glassdoor, google, zip_recruiter, bayt, bdjobs, naukri
