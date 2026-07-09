@@ -2,14 +2,38 @@
 #
 # MCP server for job-search-bot using FastMCP (mcp SDK v1.28+).
 # Exposes 25 tools across 3 tiers. Runs as stdio subprocess.
+# Includes stderr logging so crashes are captured to server.log.
 
 import sys
 import os
+import logging
 
 # Add parent dir so we can import the bot package
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Add mcp-wrapper dir so we can import tools and storage
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+# ---------------------------------------------------------------------------
+# Logging — write to server.log in mcp-wrapper/ so crashes are never silent
+# ---------------------------------------------------------------------------
+_log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "server.log")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler(_log_path, mode="a"),
+        logging.StreamHandler(sys.stderr),
+    ],
+)
+logger = logging.getLogger("job-search-mcp")
+logger.info("MCP server starting...")
+
+# Catch unhandled exceptions and log them before dying
+def _exception_hook(exc_type, exc_value, exc_tb):
+    logger.critical("Unhandled exception — server crash", exc_info=(exc_type, exc_value, exc_tb))
+    sys.__excepthook__(exc_type, exc_value, exc_tb)
+
+sys.excepthook = _exception_hook
 
 from mcp.server import FastMCP
 
@@ -17,6 +41,7 @@ from mcp.server import FastMCP
 import tools
 
 mcp = FastMCP("job-search-bot")
+logger.info("FastMCP instance created, registering tools...")
 
 # ---------------------------------------------------------------------------
 # TIER 1 — Real tools (wrap existing bot functions)
@@ -161,4 +186,11 @@ async def get_bot_status() -> str:
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    mcp.run()
+    logger.info(f"Starting MCP server with {25} tools on stdio transport")
+    try:
+        mcp.run()
+    except KeyboardInterrupt:
+        logger.info("Server stopped by user (KeyboardInterrupt)")
+    except Exception as e:
+        logger.critical(f"Server crashed: {e}", exc_info=True)
+        raise

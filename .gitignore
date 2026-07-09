@@ -6,3 +6,12 @@ profile.json
 resume.txt
 __pycache__/
 *.pyc
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
+
+# MCP-specific
+mcp-wrapper/wrapper.db
+mcp-wrapper/server.log
