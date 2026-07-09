@@ -197,3 +197,16 @@ The wrapper uses two databases:
 ## Future extraction
 
 If this wrapper matures into a standalone project with its own release cadence or user base, it will be extracted to a separate repository. The `bot/` package will become a pip-installable dependency referenced via git URL or PyPI.
+
+---
+
+## Troubleshooting
+
+| Symptom | Likely Cause | Fix |
+|---------|-------------|-----|
+| "Connection refused" or silent failure | MCP client can't find `server.py` | Verify `cwd` and absolute path in config |
+| `search_jobs` returns empty | API key missing or expired | Run `run_health_check()`, check `"apify_api_key"` |
+| `generate_cover_letter` hangs | Gemini quota exhausted | Wait until midnight Pacific, or check `run_health_check()` |
+| `update_profile` not reflecting | Changes require restart | Restart the MCP server or re-run `bootstrap()` |
+| Server crashes with no visible error | Unhandled exception | Check `mcp-wrapper/server.log` for the full traceback |
+| Tools return `"status": "pending"` | Stub tool (not yet implemented) | These are Tier 3 stubs — functionality coming in a future update |
