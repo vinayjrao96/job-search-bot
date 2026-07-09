@@ -1,0 +1,73 @@
+﻿2026-07-07T14:31:51.6263541Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-07-07T14:31:51.6273379Z ##[group]Run actions/checkout@v4
+2026-07-07T14:31:51.6274803Z with:
+2026-07-07T14:31:51.6276214Z   repository: GowthamvelP/job-search-bot
+2026-07-07T14:31:51.6280027Z   token: ***
+2026-07-07T14:31:51.6281132Z   ssh-strict: true
+2026-07-07T14:31:51.6282218Z   ssh-user: git
+2026-07-07T14:31:51.6283344Z   persist-credentials: true
+2026-07-07T14:31:51.6284473Z   clean: true
+2026-07-07T14:31:51.6285585Z   sparse-checkout-cone-mode: true
+2026-07-07T14:31:51.6286906Z   fetch-depth: 1
+2026-07-07T14:31:51.6288016Z   fetch-tags: false
+2026-07-07T14:31:51.6289170Z   show-progress: true
+2026-07-07T14:31:51.6290255Z   lfs: false
+2026-07-07T14:31:51.6291330Z   submodules: false
+2026-07-07T14:31:51.6292518Z   set-safe-directory: true
+2026-07-07T14:31:51.6293921Z ##[endgroup]
+2026-07-07T14:31:51.7498671Z Syncing repository: GowthamvelP/job-search-bot
+2026-07-07T14:31:51.7503494Z ##[group]Getting Git version info
+2026-07-07T14:31:51.7511971Z Working directory is '/home/runner/work/job-search-bot/job-search-bot'
+2026-07-07T14:31:51.7515344Z [command]/usr/bin/git version
+2026-07-07T14:31:51.7685770Z git version 2.54.0
+2026-07-07T14:31:51.7693604Z ##[endgroup]
+2026-07-07T14:31:51.7705187Z Temporarily overriding HOME='/home/runner/work/_temp/7511d4b4-c595-4e07-9072-fd8ea313102e' before making global git config changes
+2026-07-07T14:31:51.7709585Z Adding repository directory to the temporary git global config as a safe directory
+2026-07-07T14:31:51.7715434Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/job-search-bot/job-search-bot
+2026-07-07T14:31:51.7840698Z Deleting the contents of '/home/runner/work/job-search-bot/job-search-bot'
+2026-07-07T14:31:51.7844694Z ##[group]Initializing the repository
+2026-07-07T14:31:51.7848582Z [command]/usr/bin/git init /home/runner/work/job-search-bot/job-search-bot
+2026-07-07T14:31:51.7958688Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-07-07T14:31:51.7961802Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-07-07T14:31:51.7965059Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-07-07T14:31:51.7968162Z hint: call:
+2026-07-07T14:31:51.7970476Z hint:
+2026-07-07T14:31:51.7973020Z hint: 	git config --global init.defaultBranch <name>
+2026-07-07T14:31:51.7975619Z hint:
+2026-07-07T14:31:51.7978474Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-07-07T14:31:51.7981669Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-07-07T14:31:51.7988192Z hint:
+2026-07-07T14:31:51.7990884Z hint: 	git branch -m <name>
+2026-07-07T14:31:51.7993326Z hint:
+2026-07-07T14:31:51.7996531Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-07-07T14:31:51.7999995Z Initialized empty Git repository in /home/runner/work/job-search-bot/job-search-bot/.git/
+2026-07-07T14:31:51.8006820Z [command]/usr/bin/git remote add origin https://github.com/GowthamvelP/job-search-bot
+2026-07-07T14:31:51.8060734Z ##[endgroup]
+2026-07-07T14:31:51.8065551Z ##[group]Disabling automatic garbage collection
+2026-07-07T14:31:51.8068421Z [command]/usr/bin/git config --local gc.auto 0
+2026-07-07T14:31:51.8179982Z ##[endgroup]
+2026-07-07T14:31:51.8199053Z ##[group]Setting up auth
+2026-07-07T14:31:51.8201691Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-07-07T14:31:51.8209386Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-07-07T14:31:51.8745625Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-07-07T14:31:51.8754784Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-07-07T14:31:51.9041495Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-07-07T14:31:51.9081829Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-07-07T14:31:51.9323142Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-07-07T14:31:51.9365436Z ##[endgroup]
+2026-07-07T14:31:51.9370072Z ##[group]Fetching the repository
+2026-07-07T14:31:51.9377984Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +40ffbcbd5a38df88f436df9ca1ea63d892c6115a:refs/remotes/origin/main
+2026-07-07T14:31:52.1888228Z From https://github.com/GowthamvelP/job-search-bot
+2026-07-07T14:31:52.1891239Z  * [new ref]         40ffbcbd5a38df88f436df9ca1ea63d892c6115a -> origin/main
+2026-07-07T14:31:52.1932475Z ##[endgroup]
+2026-07-07T14:31:52.1936070Z ##[group]Determining the checkout info
+2026-07-07T14:31:52.1942594Z ##[endgroup]
+2026-07-07T14:31:52.1945235Z [command]/usr/bin/git sparse-checkout disable
+2026-07-07T14:31:52.1987073Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-07-07T14:31:52.2013775Z ##[group]Checking out the ref
+2026-07-07T14:31:52.2019710Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-07-07T14:31:52.2083477Z Switched to a new branch 'main'
+2026-07-07T14:31:52.2086930Z branch 'main' set up to track 'origin/main'.
+2026-07-07T14:31:52.2095779Z ##[endgroup]
+2026-07-07T14:31:52.2146738Z [command]/usr/bin/git log -1 --format=%H
+2026-07-07T14:31:52.2176674Z 40ffbcbd5a38df88f436df9ca1ea63d892c6115a
