@@ -52,11 +52,41 @@ def _require_non_empty(arguments: dict, keys: list[str]) -> str | None:
 
 
 # ===========================================================================
+# Per-request key injection
+# ===========================================================================
+# When called via HTTP transport, tools receive API keys in the arguments dict
+# under "_keys" (injected by http_server.py from request headers).
+# When called via stdio (local), no "_keys" are present — falls back to env config.
+
+def _get_keys(arguments: dict) -> dict:
+    """Extract per-request API keys from arguments, or fall back to env config."""
+    keys = arguments.pop("_keys", None)
+    if keys:
+        return keys
+    return {
+        "gemini": config.GEMINI_API_KEY,
+        "apify": config.APIFY_API_KEY,
+    }
+
+
+def _inject_keys(keys: dict):
+    """Temporarily inject per-request keys into bot config module.
+    This is safe for single-threaded async execution (one request at a time per event loop tick).
+    """
+    if keys.get("gemini"):
+        config.GEMINI_API_KEY = keys["gemini"]
+    if keys.get("apify"):
+        config.APIFY_API_KEY = keys["apify"]
+
+
+# ===========================================================================
 # TIER 1 — Real Tools (wrap existing bot functions)
 # ===========================================================================
 
 async def tool_search_jobs(arguments: dict) -> str:
     """Fetch and filter jobs from all configured sources."""
+    keys = _get_keys(arguments)
+    _inject_keys(keys)
     db.init_db()
 
     original = config.POSTED_WITHIN_DAYS
@@ -92,6 +122,8 @@ async def tool_score_job(arguments: dict) -> str:
     if err:
         return err
 
+    keys = _get_keys(arguments)
+    _inject_keys(keys)
     db.init_db()
 
     job = {
@@ -126,6 +158,8 @@ async def tool_score_job(arguments: dict) -> str:
 
 async def tool_run_pipeline(arguments: dict) -> str:
     """Execute the full pipeline: fetch → score → email."""
+    keys = _get_keys(arguments)
+    _inject_keys(keys)
     flush = arguments.get("flush", False)
 
     import io as _io
@@ -148,6 +182,8 @@ async def tool_flush_db(arguments: dict) -> str:
 
 async def tool_bootstrap(arguments: dict) -> str:
     """Regenerate profile.json from resume.txt."""
+    keys = _get_keys(arguments)
+    _inject_keys(keys)
     import io as _io
     from contextlib import redirect_stdout
     buffer = _io.StringIO()
@@ -165,6 +201,9 @@ async def tool_generate_cover_letter(arguments: dict) -> str:
     err = _require_non_empty(arguments, ["title", "company", "text"])
     if err:
         return err
+
+    keys = _get_keys(arguments)
+    _inject_keys(keys)
 
     job = {
         "title": arguments["title"],

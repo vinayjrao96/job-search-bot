@@ -73,6 +73,7 @@ def _check_rate_limit(ip: str) -> bool:
 # FastMCP with HTTP transport
 # ---------------------------------------------------------------------------
 from mcp.server import FastMCP
+from mcp.server.fastmcp import Context
 
 # Import tool handlers
 import tools
@@ -80,24 +81,48 @@ import tools
 mcp = FastMCP("job-search-bot")
 logger.info("FastMCP HTTP instance created, registering tools...")
 
+
+def _extract_keys_from_ctx(ctx: Context) -> dict:
+    """Extract per-request API keys from HTTP request headers.
+    Returns a dict with 'gemini' and 'apify' keys (or empty strings if not provided).
+    Falls back gracefully when called via stdio (no request context)."""
+    keys = {}
+    try:
+        if ctx and ctx.request_context and hasattr(ctx.request_context, "request"):
+            req = ctx.request_context.request
+            if hasattr(req, "headers"):
+                headers = req.headers
+                gemini = headers.get("x-gemini-key", "")
+                apify = headers.get("x-apify-key", "")
+                if gemini:
+                    keys["gemini"] = gemini
+                if apify:
+                    keys["apify"] = apify
+    except Exception:
+        pass  # Fail silently — fallback to env config
+    return keys
+
+
 # Register all 25 tools (same as server.py — shared tool definitions)
-# We import the tool registrations by executing server module's decorators
-# OR we re-register here. Re-registering is cleaner for dual transport.
+# HTTP versions inject _keys from request headers for per-user isolation.
 
 @mcp.tool()
-async def search_jobs(posted_within_days: int = 7) -> str:
+async def search_jobs(posted_within_days: int = 7, ctx: Context = None) -> str:
     """Fetch and filter job postings from all configured sources (Apify: LinkedIn, Indeed, Glassdoor, Naukri + Greenhouse/Lever). Returns filtered, sorted jobs. posted_within_days is clamped to 1-90."""
-    return await tools.tool_search_jobs({"posted_within_days": posted_within_days})
+    keys = _extract_keys_from_ctx(ctx)
+    return await tools.tool_search_jobs({"posted_within_days": posted_within_days, "_keys": keys})
 
 @mcp.tool()
-async def score_job(title: str, company: str, url: str, text: str, location: str = "", is_remote: bool = False) -> str:
+async def score_job(title: str, company: str, url: str, text: str, location: str = "", is_remote: bool = False, ctx: Context = None) -> str:
     """Score a single job posting against your resume using hybrid scoring (Gemini AI 0-100 + skill-alignment bonus 0-30 = final score capped at 100). All of title, company, url, text must be non-empty."""
-    return await tools.tool_score_job({"title": title, "company": company, "url": url, "text": text, "location": location, "is_remote": is_remote})
+    keys = _extract_keys_from_ctx(ctx)
+    return await tools.tool_score_job({"title": title, "company": company, "url": url, "text": text, "location": location, "is_remote": is_remote, "_keys": keys})
 
 @mcp.tool()
-async def run_pipeline(flush: bool = False) -> str:
+async def run_pipeline(flush: bool = False, ctx: Context = None) -> str:
     """Execute the full job search pipeline: fetch → filter → hybrid score → generate materials for strong matches → email CSV digest. Set flush=true to reset DB before running."""
-    return await tools.tool_run_pipeline({"flush": flush})
+    keys = _extract_keys_from_ctx(ctx)
+    return await tools.tool_run_pipeline({"flush": flush, "_keys": keys})
 
 @mcp.tool()
 async def flush_db() -> str:
@@ -105,14 +130,16 @@ async def flush_db() -> str:
     return await tools.tool_flush_db({})
 
 @mcp.tool()
-async def bootstrap() -> str:
+async def bootstrap(ctx: Context = None) -> str:
     """Regenerate profile.json from resume.txt using Gemini AI. Extracts anchor_skill, primary_skills, search_terms, keywords, location, seniority."""
-    return await tools.tool_bootstrap({})
+    keys = _extract_keys_from_ctx(ctx)
+    return await tools.tool_bootstrap({"_keys": keys})
 
 @mcp.tool()
-async def generate_cover_letter(title: str, company: str, text: str, location: str = "", url: str = "") -> str:
+async def generate_cover_letter(title: str, company: str, text: str, location: str = "", url: str = "", ctx: Context = None) -> str:
     """Generate tailored resume bullets and a cover letter for a specific job posting. title, company, and text must be non-empty."""
-    return await tools.tool_generate_cover_letter({"title": title, "company": company, "text": text, "location": location, "url": url})
+    keys = _extract_keys_from_ctx(ctx)
+    return await tools.tool_generate_cover_letter({"title": title, "company": company, "text": text, "location": location, "url": url, "_keys": keys})
 
 @mcp.tool()
 async def get_platforms() -> str:
