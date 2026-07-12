@@ -1,0 +1,17 @@
+.venv/
+.venv311/
+.git/
+.github/
+docs/
+logs_*/
+__pycache__/
+*.pyc
+.env
+profile.json
+resume.txt
+jobs.db
+mcp-wrapper/wrapper.db
+mcp-wrapper/server.log
+mcp-wrapper/http_server.log
+mcp-wrapper/exports/
+fly.toml

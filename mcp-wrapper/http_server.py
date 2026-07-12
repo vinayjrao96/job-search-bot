@@ -78,7 +78,7 @@ from mcp.server.fastmcp import Context
 # Import tool handlers
 import tools
 
-mcp = FastMCP("job-search-bot")
+mcp = FastMCP("job-search-bot", host=HOST, port=PORT)
 logger.info("FastMCP HTTP instance created, registering tools...")
 
 
