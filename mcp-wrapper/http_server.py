@@ -238,15 +238,48 @@ async def get_bot_status() -> str:
 
 
 # ---------------------------------------------------------------------------
+# Keepalive — prevents Oracle Cloud idle VM reclamation
+# Only runs when KEEPALIVE=true is set in environment (e.g., on Oracle Cloud)
+# ---------------------------------------------------------------------------
+KEEPALIVE_ENABLED = os.environ.get("KEEPALIVE", "").lower() in ("1", "true", "yes")
+KEEPALIVE_INTERVAL = int(os.environ.get("KEEPALIVE_INTERVAL", 300))  # seconds, default 5 min
+
+
+def _keepalive_loop():
+    """Background thread that pings the server periodically to prevent idle reclamation."""
+    import urllib.request
+    time.sleep(30)  # Wait for server to start
+    logger.info(f"Keepalive thread started (interval: {KEEPALIVE_INTERVAL}s)")
+    while True:
+        try:
+            req = urllib.request.Request(
+                f"http://127.0.0.1:{PORT}/mcp",
+                data=b'{"jsonrpc":"2.0","id":0,"method":"ping"}',
+                headers={"Content-Type": "application/json", "Accept": "application/json, text/event-stream"},
+                method="POST",
+            )
+            urllib.request.urlopen(req, timeout=5)
+        except Exception:
+            pass  # Server not ready or ping failed — non-critical
+        time.sleep(KEEPALIVE_INTERVAL)
+
+
+# ---------------------------------------------------------------------------
 # Entry point — HTTP transport
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
+    import threading
+
     transport = os.environ.get("MCP_TRANSPORT", "streamable-http")
     logger.info(f"Starting MCP HTTP server on {HOST}:{PORT} (transport: {transport})")
     logger.info(f"CORS origins: {ALLOWED_ORIGINS}")
     logger.info(f"Rate limit: {RATE_LIMIT_PER_HOUR} req/hour per IP")
     logger.info(f"Server API key: {'required' if SERVER_API_KEY else 'NOT SET (open access)'}")
+    logger.info(f"Keepalive: {'ENABLED' if KEEPALIVE_ENABLED else 'disabled'}")
+
+    if KEEPALIVE_ENABLED:
+        threading.Thread(target=_keepalive_loop, daemon=True).start()
 
     try:
         mcp.run(transport=transport)
