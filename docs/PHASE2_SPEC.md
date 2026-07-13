@@ -1,7 +1,7 @@
 # Phase 2: BYOK Hosted Web App — Requirements & Architecture
 
 **Status:** Draft for review  
-**Author:** Kiro (AI) — pending approval from Gowthamvel + Kimi AI review  
+**Author:** Kiro (AI) — pending approval from vinayjrao96 + Kimi AI review  
 **Date:** 2026-07-10
 
 ---

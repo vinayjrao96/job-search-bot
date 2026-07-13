@@ -105,7 +105,7 @@ job-search-bot/
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/GowthamvelP/job-search-bot.git
+git clone https://github.com/vinayjrao96/job-search-bot.git
 cd job-search-bot
 python -m venv .venv && source .venv/bin/activate
 pip install -r bot/requirements.txt

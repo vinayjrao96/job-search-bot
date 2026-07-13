@@ -46,34 +46,34 @@ def _p(key, fallback):
 
 # Anchor skill — the candidate's single defining technology.
 # Gets the highest skill bonus (+20 in title, +10 in description).
-ANCHOR_SKILL: str = _p("anchor_skill", "Ruby on Rails")
+ANCHOR_SKILL: str = _p("anchor_skill", "React")
 
 # Primary skills (excluding anchor) — get smaller bonuses (+5 each in title).
 PRIMARY_SKILLS: list[str] = _p("primary_skills", [
-    "AWS", "Backend Architecture", "Serverless", "Node.js",
+    "JavaScript", "Frontend Architecture", "TypeScript", "Redux", "Micro Frontends",
 ])
 
 # Search queries sent to JSearch (Google for Jobs aggregator).
 # Each query = 1 API request per run. Keep short — see JSEARCH_INTERVAL_HOURS.
 JSEARCH_QUERIES: list[str] = _p("search_terms", [
-    "Technical Lead Ruby on Rails India",
-    "Ruby on Rails Lead Engineer remote India",
+    "Senior Software Engineer Frontend India",
+    "Senior Frontend Engineer remote India",
 ])[:2]  # cap at 2 to respect free-tier budget (200 req/month)
 
 # Search queries sent to Apify multi-board scraper.
 APIFY_SEARCH_TERMS: list[str] = _p("search_terms", [
-    "Technical Lead Ruby on Rails",
-    "Ruby on Rails Backend Lead India",
-    "Staff Engineer Ruby on Rails remote",
-    "Backend Architect Rails AWS",
+    "Senior Software Engineer Frontend India",
+    "Senior Frontend Engineer India",
+    "Lead Frontend Engineer",
+    "Lead UI Developer",
 ])
 
 # Keyword filter — job title/description must contain at least one (case-insensitive).
 KEYWORDS: list[str] = _p("keywords", [
-    "ruby on rails", "rails",
-    "technical lead", "backend lead", "engineering lead",
-    "staff engineer", "principal engineer", "backend architect",
-    "engineering manager",
+    "react", "frontend",
+    "senior software engineer", "frontend lead", "senior software lead",
+    "ui developer", "frontend developer", "frontend architect",
+    "react.js developer",
 ])
 
 # Primary target country. Jobs in this country are always included.
@@ -83,13 +83,13 @@ TARGET_COUNTRY: str = _p("country", "India")
 CANDIDATE_LOCATION: str = _p("location", "India")
 
 # Candidate summary used in scoring prompts.
-CANDIDATE_SUMMARY: str = _p("summary", "Experienced backend engineer targeting senior/lead roles.")
+CANDIDATE_SUMMARY: str = _p("summary", "Experienced senior software frontend engineer targeting senior/lead roles.")
 
 # Seniority level — used to penalise junior roles in scoring.
-CANDIDATE_SENIORITY: str = _p("seniority", "lead")
+CANDIDATE_SENIORITY: str = _p("seniority", "senior/lead")
 
 # Email destination for digests (falls back to env var, then empty).
-EMAIL_TO: str = _p("email", os.environ.get("EMAIL_TO", ""))
+EMAIL_TO: str = _p("email", os.environ.get("EMAIL_TO", "vinayjrao96@gmail.com"))
 
 # ---------------------------------------------------------------------------
 # API credentials (always from environment, never from profile)

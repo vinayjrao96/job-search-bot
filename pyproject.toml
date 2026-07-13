@@ -16,7 +16,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [
-    {name = "Gowthamvel Palanivel", email = "gowthamvelpalanivel@gmail.com"},
+    {name = "Vinay J Rao", email = "vinayjrao96@gmail.com"},
 ]
 keywords = ["job-search", "automation", "gemini-ai", "mcp", "apify"]
 classifiers = [
@@ -37,9 +37,9 @@ mcp = ["job-search-bot-mcp @ file:./mcp-wrapper"]
 dev = ["pytest", "pytest-asyncio"]
 
 [project.urls]
-Homepage = "https://github.com/GowthamvelP/job-search-bot"
-Repository = "https://github.com/GowthamvelP/job-search-bot"
-Issues = "https://github.com/GowthamvelP/job-search-bot/issues"
+Homepage = "https://github.com/vinayjrao96/job-search-bot"
+Repository = "https://github.com/vinayjrao96/job-search-bot"
+Issues = "https://github.com/vinayjrao96/job-search-bot/issues"
 
 [build-system]
 requires = ["hatchling"]

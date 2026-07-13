@@ -251,11 +251,11 @@ Agent: calls generate_cover_letter(title="Senior Rails Engineer", company="Strip
 ```json
 {
   "apify_boards": ["linkedin", "indeed", "glassdoor", "naukri"],
-  "apify_search_terms": ["ruby on rails", "backend engineer"],
+  "apify_search_terms": ["React", "frontend engineer"],
   "greenhouse_companies": ["stripe", "figma"],
   "lever_companies": ["netlify"],
   "jsearch_enabled": false,
-  "anchor_skill": "Ruby on Rails",
+  "anchor_skill": "React",
   "posted_within_days": 7
 }
 ```
@@ -337,7 +337,7 @@ Agent: calls get_analytics(hours=168)
   "jobs": [
     {
       "job_id": "ap_linkedin_abc123",
-      "title": "Senior Rails Engineer",
+      "title": "Senior Frontend Engineer",
       "company": "Stripe",
       "location": "Remote",
       "url": "https://...",
@@ -384,7 +384,7 @@ Agent: calls get_saved_jobs(min_score=80)
   "gmail_app_password": "set",
   "resume_file": "exists",
   "profile_json": "loaded",
-  "anchor_skill": "Ruby on Rails",
+  "anchor_skill": "React",
   "database": "writable",
   "overall": "healthy"
 }
@@ -553,7 +553,7 @@ Agent: calls get_job_details(job_id="ap_linkedin_abc123")
 {
   "status": "updated",
   "key": "anchor_skill",
-  "old_value": "Ruby on Rails",
+  "old_value": "React",
   "new_value": "Python",
   "note": "Restart the bot or re-run pipeline for changes to take effect."
 }

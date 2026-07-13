@@ -1,5 +1,5 @@
 {
-  "mcpServers": {
+  "servers": {
     "job-search": {
       "command": "python",
       "args": ["/Users/vinayrao/projects/job-search-bot/mcp-wrapper/server.py"],
