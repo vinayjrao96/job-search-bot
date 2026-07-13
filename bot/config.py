@@ -72,10 +72,10 @@ APIFY_SEARCH_TERMS: list[str] = _p("search_terms", [
 
 # Keyword filter — job title/description must contain at least one (case-insensitive).
 KEYWORDS: list[str] = _p("keywords", [
-    "react", "frontend",
+    "react", "frontend", "html", "css", "micro frontend", "javascript", "typescript", "redux", 
     "senior software engineer", "frontend lead", "senior software lead",
     "ui developer", "frontend developer", "frontend architect", "web developer", 
-    "react.js developer",
+    "react.js developer", "next.js", ""
 ])
 
 # Primary target country. Jobs in this country are always included.
