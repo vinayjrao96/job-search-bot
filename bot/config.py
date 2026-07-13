@@ -75,7 +75,7 @@ KEYWORDS: list[str] = _p("keywords", [
     "react", "frontend", "html", "css", "micro frontend", "javascript", "typescript", "redux", 
     "senior software engineer", "frontend lead", "senior software lead",
     "ui developer", "frontend developer", "frontend architect", "web developer", 
-    "react.js developer", "next.js", ""
+    "react.js developer", "next.js"
 ])
 
 # Primary target country. Jobs in this country are always included.
