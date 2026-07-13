@@ -57,7 +57,7 @@ PRIMARY_SKILLS: list[str] = _p("primary_skills", [
 # Each query = 1 API request per run. Keep short — see JSEARCH_INTERVAL_HOURS.
 JSEARCH_QUERIES: list[str] = _p("search_terms", [
     "Senior Software Engineer Frontend India",
-    "Senior Frontend Engineer remote India",
+    "Senior Frontend Engineer India",
 ])[:2]  # cap at 2 to respect free-tier budget (200 req/month)
 
 # Search queries sent to Apify multi-board scraper.
@@ -66,13 +66,15 @@ APIFY_SEARCH_TERMS: list[str] = _p("search_terms", [
     "Senior Frontend Engineer India",
     "Lead Frontend Engineer",
     "Lead UI Developer",
+    "Senior Software Developer - Web",
+    "Senior React Frontend Developer"
 ])
 
 # Keyword filter — job title/description must contain at least one (case-insensitive).
 KEYWORDS: list[str] = _p("keywords", [
     "react", "frontend",
     "senior software engineer", "frontend lead", "senior software lead",
-    "ui developer", "frontend developer", "frontend architect",
+    "ui developer", "frontend developer", "frontend architect", "web developer", 
     "react.js developer",
 ])
 
@@ -131,10 +133,10 @@ LEVER_COMPANIES: list[str] = []
 
 # Only include jobs posted within this many days.
 # Sensible values: 1 (24h), 7 (week), 30 (month), 90 (3 months)
-POSTED_WITHIN_DAYS: int = 7
+POSTED_WITHIN_DAYS: int = 30
 
 # Score threshold: jobs below this are stored but not emailed or given materials.
-SCORE_THRESHOLD: int = 70
+SCORE_THRESHOLD: int = 60
 
 # Location/visa filter. When True:
 #   - Remote jobs: must signal India-timezone acceptance.
